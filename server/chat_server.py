@@ -6,7 +6,6 @@ class ChatServer:
     def __init__(self, host:str="127.0.0.1", port:int=1658) -> None:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((host, port))
-        self.accept_connections = {}
         self.connections:Dict[str, socket.socket] = {}
         self.connection_lock = Lock()
 
@@ -24,7 +23,7 @@ class ChatServer:
 
     def handle_connection(self, client_connection:socket, source_addr):
         while True:
-            data = client_connection.recs(1024)
+            data = client_connection.recv(1024)
             print(f"{source_addr}: {data.decode()}")
             self.broadcast(source_addr, data)
     # client_connection.close()
