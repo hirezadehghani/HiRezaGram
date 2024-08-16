@@ -1,13 +1,16 @@
 import socket
 from threading import Thread, Lock
 from typing import Dict
-import config
+import yaml
+
+with open("../config.yaml", "rt") as config_file:
+    config = yaml.load(config_file)
 
 class ChatServer:
     def __init__(self) -> None:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_host = config.SERVER_HOST
-        self.server_port = config.SERVER_PORT
+        self.server_host = config['SERVER_HOST']
+        self.server_port = config['SERVER_PORT']
         self.socket.bind((self.server_host, self.server_port))
         self.connections:Dict[str, socket.socket] = {}
         self.connection_lock = Lock()
