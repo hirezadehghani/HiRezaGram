@@ -1,33 +1,8 @@
-import socket
-import time
-import threading
-import queue
-
-SERVER_HOST = "127.0.0.1"
-SERVER_PORT = 1658
-
-def get_input(queue:queue.Queue):
-    while True:
-        data = input()
-        queue.put(data)
+from client_server import ClientServer
 
 if __name__ == "__main__":
     print('in client')
-    msg_queue = queue.Queue()
-    input_thread = threading.Thread(target=get_input, args=(msg_queue,))
-    input_thread.start()
-    while True:
-        try:
-            msg = msg_queue.get(timeout=0.1)
-            if msg != None:
-                print(msg)
-                if msg == "q":
-                    break
-        except queue.Empty as e:
-            print("/|\\", end="")
-        except TimeoutError as e:
-            print("Waiting to insert message")
-    input_thread.join()
-
-        # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        #     s.connect((SERVER_HOST, SERVER_PORT))
+    
+    client_server = ClientServer()
+    client_server.connect_to_server()
+    client_server.handle_data()
