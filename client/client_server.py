@@ -4,16 +4,20 @@ import queue
 import time
 import yaml
 
-with open("../config.yaml", "rt") as config_file:
-    config = yaml.load(config_file)
+with open('../config.yaml', 'r') as file:
+    config = yaml.safe_load(file)
 
 class ClientServer:
     def __init__(self) -> None:
         self.msg_queue = queue.Queue(time)
 
     def connect_to_server(self) -> None:
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect((config['CLIENT_HOST'], config['CLIENT_PORT']))
+        try:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.connect((config['General']['CLIENT_HOST'], config['General']['CLIENT_PORT']))
+        except:
+            print('Error in connecting to chat server (May be server is off!)')
+            exit(1)
 
     def get_input(queue:queue.Queue) -> None:
         while True:
