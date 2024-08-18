@@ -29,7 +29,6 @@ class ChatServer:
     def handle_connection(self, client_connection:socket, source_addr):
         while True:
             data = client_connection.recv(1024)
-            print(f"{source_addr}: {data.decode()}")
             self.broadcast(source_addr, data)
     # client_connection.close()
     
