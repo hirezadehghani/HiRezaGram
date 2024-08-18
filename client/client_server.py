@@ -19,15 +19,15 @@ class ClientServer:
             print('Error in connecting to chat server (May be server is off!)')
             exit(1)
 
-    def get_input(queue:queue.Queue) -> None:
+    def get_input(self, queue:queue.Queue, data) -> None:
         while True:
-            data = input()
             queue.put(data)
     
-    def handle_data(self, threading: Thread) -> None:
-        self.input_thread = threading.Thread(target=self.get_input, args=(self.msg_queue,))
+    def handle_data(self) -> None:
+        data = input()
+        self.input_thread = Thread(target=self.get_input, args=(self.msg_queue,data))
         self.input_thread.start()
-        self.get_data_from_queue(self, self.msg_queue)
+        self.get_data_from_queue(self.msg_queue)
 
     def get_data_from_queue(self, msg_queue: queue):
         socket_connection = self.socket
