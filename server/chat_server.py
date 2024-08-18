@@ -23,16 +23,25 @@ class ChatServer:
         while True:
             conn, addr = self.socket.accept()
             print(f"client {addr} is connected")
+            approve_message = (f"Server approved: Welcome {addr}")
+            # self.socket.send(approve_message)
+            print(approve_message)
             thread = Thread(target = self.handle_connection, args = (conn, addr))
             thread.start()
 
-    def handle_connection(self, client_connection:socket, source_addr):
+    def handle_connection(self, client_socket:socket, source_addr):
         while True:
-            data = client_connection.recv(1024)
-            self.broadcast(source_addr, data)
-    # client_connection.close()
+            request = client_socket.recv(1024)
+            self.broadcast(source_addr, request)
+            if (request == 'q'):
+                print(f"client {source_addr} is disconnected")
+                self.shutdown()
     
     def broadcast(self, source_addr: str, data:bytes):
         for addr, conn in self.connections.items():
             if addr != source_addr:
-                conn.sendall(f"{source_addr}: {data}".encode())
+                conn.sendall(f"{source_addr}: {data}".encode(encoding="utf-8"))
+
+    def shutdown(self):
+        self.socket.shutdown(socket.SHUT_RDWR)
+        self.socket.close()
