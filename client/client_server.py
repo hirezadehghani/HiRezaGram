@@ -9,23 +9,24 @@ with open('../config.yaml', 'r') as file:
 
 class ClientServer:
     def __init__(self) -> None:
-        self.msg_queue = queue.Queue(time)
+        self.msg_queue = queue.Queue()
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def connect_to_server(self) -> None:
         try:
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.connect((config['General']['CLIENT_HOST'], config['General']['CLIENT_PORT']))
+            print(self.socket.recv(1024))
         except:
             print('Error in connecting to chat server (May be server is off!)')
             exit(1)
-
-    def get_input(self, queue:queue.Queue, data) -> None:
-        while True:
-            queue.put(data)
     
     def handle_data(self) -> None:
-        data = input()
-        self.input_thread = Thread(target=self.get_input, args=(self.msg_queue,data))
+        def get_input(queue:queue.Queue):
+            while True:
+                data = input()
+                queue.put(data)
+
+        self.input_thread = Thread(target=get_input, args=(self.msg_queue,))
         self.input_thread.start()
         self.get_data_from_queue(self.msg_queue)
 
@@ -34,12 +35,10 @@ class ClientServer:
 
         while True:
             try:
-                msg = msg_queue.get(timeout=0.3)
+                msg = msg_queue.get()
                 if msg != None:
                     sending_data = msg.encode(encoding="utf-8")
-                    self.socket.sendall(sending_data)
-                    data = socket_connection.recv(1024)
-                    print(f"Received {data!r}")                
+                    socket_connection.send(sending_data)
                     if msg == "q":
                         break
             except queue.Empty as e:
