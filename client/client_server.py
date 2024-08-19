@@ -23,22 +23,20 @@ class ClientServer:
     def handle_data(self) -> None:
         def get_input(queue:queue.Queue):
             while True:
-                data = input()
-                queue.put(data)
+                data = input('Enter message: ')
+                sending_data = data.encode(encoding="utf-8")[:1024]
+                queue.put(sending_data)
 
         self.input_thread = Thread(target=get_input, args=(self.msg_queue,))
         self.input_thread.start()
         self.get_data_from_queue(self.msg_queue)
 
     def get_data_from_queue(self, msg_queue: queue):
-        socket_connection = self.socket
-
         while True:
             try:
                 msg = msg_queue.get()
                 if msg != None:
-                    sending_data = msg.encode(encoding="utf-8")
-                    socket_connection.send(sending_data)
+                    self.socket.send(msg_queue)
                     if msg == "q":
                         break
             except queue.Empty as e:
@@ -47,4 +45,4 @@ class ClientServer:
                 print("Waiting to insert message")
         self.input_thread.join()
 
-        socket_connection.close()
+        self.socket.close()
