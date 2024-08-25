@@ -21,10 +21,14 @@ HiRezaGram is a Python-based Chat server client that connects to a server for se
    ```
 
 ## Usage
-
-Run the client:
+1. Run the server:
 ```bash
-python client/client_server.py
+python3 client/client_server.py
+```
+
+2. Run the client(s):
+```bash
+python3 client/client_server.py
 ```
 
 ## Project Structure
