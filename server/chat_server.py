@@ -26,17 +26,12 @@ class ChatServer:
         self.socket.listen()
         print(f"Listening on 127.0.0.1:1658")
 
-    def accept_connections(self)->None:
-        self.accept_client()
-        accept_connection_thread = Thread(target = self.accept_client, args = ())
-        accept_connection_thread.start()
-
-    def accept_client(self):
+    def accept_connections(self):
         while True:
             client_socket, addr = self.socket.accept()
             self.connections[addr] = client_socket
             print(f"client {addr} is connected")
-            print(f"Server approved: Welcome {addr}")
+            client_socket.send(f"Server approved: Welcome {addr}".encode("utf-8"))
             handle_message_thread = Thread(target = self.handle_client, args = (client_socket, addr))
             handle_message_thread.start()
 
@@ -48,9 +43,9 @@ class ChatServer:
                     client_socket.send("your connection is closed".encode("utf-8"))
                     client_socket.close()
                     self.connections.pop(addr)
-                    print(f"connection to client ({addr[0]:addr[1]}) closed")
+                    print(f"connection to client ({addr}) closed")
                     break
-                print(f"Received: {request}\n")
+                print(f"Received from {addr}: {request}\n")
                 client_socket.send(f"Your message accepted".encode("utf-8"))
                 self.broadcast(addr, request)
         except Exception as e:
