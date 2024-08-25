@@ -38,13 +38,12 @@ class ClientServer:
                         self.socket.send(byte_message)
                         server_request = self.socket.recv(1024)
                         server_message = server_request.decode(encoding="utf-8")[:1024]
+                        print("", end="\n")
                         print(server_message, end="\n")
                     except socket.error as e:
                         print(f"An error in socket occurred")
                         if isinstance(e.args, tuple):
                             logging.error(f"An error occurred: {e}")
-                            if (hasattr(e, [0]) and [0] == e.PIPE):
-                                print("An error in detecting remote disconnection")
                 if message == "q":
                     self.socket.close()
                     break
