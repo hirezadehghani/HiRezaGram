@@ -6,15 +6,15 @@ import configparser
 import logging
 import time
 
-# with open('../config.yaml', 'r') as file:
-#     config = yaml.safe_load(file)
+with open('../config.yaml', 'r') as file:
+    config = yaml.safe_load(file)
 
 class ChatServer:
     def __init__(self) -> None:
         logging.basicConfig(filename='error.log', level=logging.ERROR)
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socket.bind(("127.0.0.1", 1658))
+            self.socket.bind((config['General']['CLIENT_HOST'], config['General']['CLIENT_PORT']))
             self.connect_to_socket()
         except Exception as e:
             print('Error: can not connect to socket')
@@ -24,7 +24,7 @@ class ChatServer:
 
     def connect_to_socket(self):        
         self.socket.listen()
-        print(f"Listening on 127.0.0.1:1658")
+        print(f"Listening on {(config['General']['CLIENT_HOST'], config['General']['CLIENT_PORT'])}")
 
     def accept_connections(self):
         while True:
