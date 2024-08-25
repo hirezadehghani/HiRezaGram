@@ -4,7 +4,7 @@ HiRezaGram is a Python-based Chat server client that connects to a server for se
 
 ## Features
 
-- Send and receive Telegram messages
+- Send and receive messages
 - Multithreading for concurrent operations
 - Message queue management
 
