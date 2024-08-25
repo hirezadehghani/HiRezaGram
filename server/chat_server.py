@@ -3,45 +3,72 @@ from threading import Thread, Lock
 from typing import Dict
 import yaml
 import configparser
+import logging
+import time
 
-with open('../config.yaml', 'r') as file:
-    config = yaml.safe_load(file)
+# with open('../config.yaml', 'r') as file:
+#     config = yaml.safe_load(file)
 
 class ChatServer:
     def __init__(self) -> None:
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_host = config['General']['SERVER_HOST']
-        self.server_port = config['General']['SERVER_PORT']
-        self.socket.bind((self.server_host, self.server_port))
+        logging.basicConfig(filename='error.log', level=logging.ERROR)
+        try:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.bind(("127.0.0.1", 1658))
+        except Exception as e:
+            print('Error: can not connect to socket')
+            logging.error(f"An error occurred: {e}")
+        finally:
+            self.socket.close()
+        self.socket = ""
         self.connections:Dict[str, socket.socket] = {}
         self.connection_lock = Lock()
 
-    def listen(self)->None:
+    def connect_to_socket(self):
+        
         self.socket.listen()
+        print(f"Listening on 127.0.0.1:1658")
 
     def accept_connections(self)->None:
+        self.accept_client()
+        accept_connection_thread = Thread(target = self.accept_client, args = ())
+        accept_connection_thread.start()
+
+    def accept_client(self):
         while True:
-            conn, addr = self.socket.accept()
+            client_socket, addr = self.socket.accept()
+            self.connections[addr] = client_socket
             print(f"client {addr} is connected")
-            approve_message = (f"Server approved: Welcome {addr}")
-            # self.socket.send(approve_message)
-            print(approve_message)
-            thread = Thread(target = self.handle_connection, args = (conn, addr))
-            thread.start()
+            print(f"Server approved: Welcome {addr}")
+            handle_message_thread = Thread(target = self.handle_client, args = (client_socket, addr))
+            handle_message_thread.start()
 
-    def handle_connection(self, client_socket:socket, source_addr):
-        while True:
-            request = client_socket.recv(1024)
-            self.broadcast(source_addr, request)
-            if (request == 'q'):
-                print(f"client {source_addr} is disconnected")
-                self.shutdown()
-    
+    def handle_client(self, client_socket:socket, addr):
+        try:
+            while True:
+                request = client_socket.recv(1024).decode("utf-8")
+                if(request.lower() == "close"):
+                    client_socket.send("your connection is closed".encode("utf-8"))
+                    break
+                print(f"Received: {request}")
+                client_socket.send(f"accepted".encode("utf-8"))
+                self.broadcast(addr, request)
+
+        except Exception as e:
+            print('Error: can not handle client connection')
+            logging.error(f"An error occurred: {e}")
+        finally:
+            client_socket.close()
+            print(f"connection to client ({addr[0]:addr[1]}) closed")
+
     def broadcast(self, source_addr: str, data:bytes):
-        for addr, conn in self.connections.items():
-            if addr != source_addr:
-                conn.sendall(f"{source_addr}: {data}".encode(encoding="utf-8"))
-
-    def shutdown(self):
-        self.socket.shutdown(socket.SHUT_RDWR)
-        self.socket.close()
+        try:
+            for addr, conn in self.connections.items():
+                if addr != source_addr:
+                    conn.sendall(f"{source_addr}: {data}".encode(encoding="utf-8"))
+        except socket.error as e:
+            print(f"An error in socket occurred")
+            if isinstance(e.args, tuple):
+                logging.error(f"An error occurred: {e}")
+                if e[0] == e.PIPE:
+                    print("An error in detecting remote disconnection")
