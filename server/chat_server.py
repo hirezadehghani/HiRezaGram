@@ -15,17 +15,14 @@ class ChatServer:
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.bind(("127.0.0.1", 1658))
+            self.connect_to_socket()
         except Exception as e:
             print('Error: can not connect to socket')
             logging.error(f"An error occurred: {e}")
-        finally:
-            self.socket.close()
-        self.socket = ""
         self.connections:Dict[str, socket.socket] = {}
         self.connection_lock = Lock()
 
-    def connect_to_socket(self):
-        
+    def connect_to_socket(self):        
         self.socket.listen()
         print(f"Listening on 127.0.0.1:1658")
 
@@ -47,19 +44,18 @@ class ChatServer:
         try:
             while True:
                 request = client_socket.recv(1024).decode("utf-8")
-                if(request.lower() == "close"):
+                if(request.lower() == "q"):
                     client_socket.send("your connection is closed".encode("utf-8"))
+                    client_socket.close()
+                    self.connections.pop(addr)
+                    print(f"connection to client ({addr[0]:addr[1]}) closed")
                     break
-                print(f"Received: {request}")
-                client_socket.send(f"accepted".encode("utf-8"))
+                print(f"Received: {request}\n")
+                client_socket.send(f"Your message accepted".encode("utf-8"))
                 self.broadcast(addr, request)
-
         except Exception as e:
             print('Error: can not handle client connection')
             logging.error(f"An error occurred: {e}")
-        finally:
-            client_socket.close()
-            print(f"connection to client ({addr[0]:addr[1]}) closed")
 
     def broadcast(self, source_addr: str, data:bytes):
         try:

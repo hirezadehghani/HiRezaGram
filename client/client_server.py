@@ -25,37 +25,30 @@ class ClientServer:
     def handle_data(self) -> None:
         self.queue_thread = Thread(target=self.get_data_from_queue, args=(self.msg_queue,))
         self.queue_thread.start()
-        self.put_data_to_queue()
-
-    def put_data_to_queue(self)->None:
+                
+    def get_data_from_queue(self):
         while True:
             data = input('Enter message: ')
             self.msg_queue.put(data)
-
-    def get_data_from_queue(self, msg_queue: queue.Queue):
-        while True:
-            server_request = self.socket.recv(1024)
-            server_message = server_request.decode(encoding="utf-8")[:1024]
-            print(server_message, end="\n")
-
             try:
-                message = msg_queue.get(timeout=0.5)
+                message = self.msg_queue.get(timeout=0.5)
                 byte_message = message.encode(encoding="utf-8")[:1024]
                 if message != None:
                     try:
                         self.socket.send(byte_message)
+                        server_request = self.socket.recv(1024)
+                        server_message = server_request.decode(encoding="utf-8")[:1024]
+                        print(server_message, end="\n")
                     except socket.error as e:
                         print(f"An error in socket occurred")
                         if isinstance(e.args, tuple):
                             logging.error(f"An error occurred: {e}")
-                            if e[0] == e.PIPE:
+                            if (hasattr(e, [0]) and [0] == e.PIPE):
                                 print("An error in detecting remote disconnection")
                 if message == "q":
+                    self.socket.close()
                     break
             except queue.Empty as e:
                 print("/|\\", end="\n")
             except TimeoutError as e:
                 print("Waiting to insert message")
-        
-        self.queue_thread.join()
-        self.socket.close()
