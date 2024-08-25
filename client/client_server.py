@@ -5,8 +5,8 @@ import time
 import yaml
 import logging
 
-# with open('../config.yaml', 'r') as file:
-#     config = yaml.safe_load(file)
+with open('../config.yaml', 'r') as file:
+    config = yaml.safe_load(file)
 
 class ClientServer:
     def __init__(self) -> None:
@@ -17,7 +17,7 @@ class ClientServer:
 
     def connect_to_server(self) -> None:
         try:
-            self.socket.connect(("127.0.0.1", 1658))
+            self.socket.connect((config['General']['CLIENT_HOST'], config['General']['CLIENT_PORT']))
         except:
             print('Error in connecting to chat server (May be server is off!)')
             exit(1)
