@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>765</width>
-    <height>561</height>
+    <width>802</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,41 +29,38 @@
     <string>Welcome to HiReza Chat Server</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>120</y>
-     <width>91</width>
-     <height>21</height>
+     <x>210</x>
+     <y>190</y>
+     <width>361</width>
+     <height>281</height>
     </rect>
    </property>
-   <property name="text">
-    <string>First Name</string>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="first_name">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>120</y>
-     <width>211</width>
-     <height>81</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="connect_button">
-   <property name="geometry">
-    <rect>
-     <x>470</x>
-     <y>170</y>
-     <width>80</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Connect</string>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>Chat list</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Contacts list</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Groups</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
