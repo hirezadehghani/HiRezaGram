@@ -7,12 +7,16 @@ class MainWindow(QDialog):
     def __init__(self) -> None:
         super(MainWindow, self).__init__()
         loadUi("./ui/main_window.ui", self)
-
+        self.set_connections()
+    
+    def set_connections(self):
         # Button
-        # self.button.clicked.connect(self.button_clicked)
+        pass
+        # self.connect_button.clicked.connect(self.button_clicked)
 
-        def button_clicked(self):
-            print()
+    def button_clicked(self):
+        
+        print('click!')
 
 # Main
 app = QApplication(sys.argv)
