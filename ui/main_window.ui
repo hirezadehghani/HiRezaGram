@@ -13,121 +13,188 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>40</y>
-     <width>391</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 18pt &quot;Sans Serif&quot;;</string>
-   </property>
-   <property name="text">
-    <string>Welcome to HiReza Chat Server</string>
-   </property>
-  </widget>
-  <widget class="QStackedWidget" name="stackedWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>80</y>
-     <width>731</width>
-     <height>491</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="page_2">
-    <widget class="QWidget" name="verticalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>80</y>
-       <width>441</width>
-       <height>341</height>
-      </rect>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>Sans Serif</family>
+       <pointsize>18</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QPushButton" name="btn_chat_list">
-        <property name="text">
-         <string>Chat list</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_contacts_list">
-        <property name="text">
-         <string>Contacts list</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_groups">
-        <property name="text">
-         <string>Groups</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="styleSheet">
+      <string notr="true">font: 18pt &quot;Sans Serif&quot;;</string>
+     </property>
+     <property name="text">
+      <string>HiReza Chat Server</string>
+     </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="page">
-    <widget class="QFrame" name="frame">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>721</width>
-       <height>521</height>
-      </rect>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QListView" name="listView">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>181</width>
-        <height>521</height>
-       </rect>
-      </property>
+     <widget class="QWidget" name="page_2">
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>80</y>
+         <width>441</width>
+         <height>341</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="btn_chat_list">
+          <property name="text">
+           <string>Chat list</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_contacts_list">
+          <property name="text">
+           <string>Contacts list</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_new_chat">
+          <property name="text">
+           <string>New Chat/Group</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
-     <widget class="QTextEdit" name="textEdit">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>480</y>
-        <width>541</width>
-        <height>41</height>
-       </rect>
-      </property>
+     <widget class="QWidget" name="page">
+      <widget class="QFrame" name="frame">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>761</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QListView" name="listView"/>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="textEdit"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_back">
+          <property name="text">
+           <string>Back</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
-     <widget class="QPushButton" name="btn_back">
-      <property name="geometry">
-       <rect>
-        <x>580</x>
-        <y>450</y>
-        <width>80</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Back</string>
-      </property>
+     <widget class="QWidget" name="page_3">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QFrame" name="frame_2">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QScrollBar" name="verticalScrollBar">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListView" name="listView_2"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_back_2">
+         <property name="text">
+          <string>Back</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_4">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QFrame" name="frame_3">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="font">
+             <font>
+              <family>Raleway</family>
+              <pointsize>22</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Select Contacts</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QScrollArea" name="scrollArea">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>744</width>
+               <height>437</height>
+              </rect>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_back_3">
+            <property name="text">
+             <string>Back</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
-   </widget>
-  </widget>
+   </item>
+  </layout>
   <zorder>stackedWidget</zorder>
   <zorder>label</zorder>
  </widget>
