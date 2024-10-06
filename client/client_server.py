@@ -4,6 +4,7 @@ import queue
 import time
 import yaml
 import logging
+from module.contacts import Contacts
 
 with open('../config.yaml', 'r') as file:
     config = yaml.safe_load(file)
@@ -13,6 +14,7 @@ class ClientServer:
         self.msg_queue = queue.Queue()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.input_thread = ''
+        self.contacts = Contacts()
         logging.basicConfig(filename='error.log', level=logging.ERROR)
 
     def connect_to_server(self) -> None:
@@ -51,3 +53,6 @@ class ClientServer:
                 print("/|\\", end="\n")
             except TimeoutError as e:
                 print("Waiting to insert message")
+        
+    def chat(self):
+        pass
