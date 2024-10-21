@@ -5,4 +5,4 @@ if __name__ == "__main__":
     
     client_server = ClientServer()
     client_server.connect_to_server()
-    client_server.get_data_from_queue()
+    client_server.menu()

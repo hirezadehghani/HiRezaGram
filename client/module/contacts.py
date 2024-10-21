@@ -1,5 +1,5 @@
 class Contacts:
-    def __init__(self, name):
+    def __init__(self):
         self.contacts = dict()
 
     def add_new_contact(self, name:str, phone:str) -> None:
