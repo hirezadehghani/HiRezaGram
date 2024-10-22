@@ -5,7 +5,8 @@ import time
 import yaml
 import logging
 import sys
-from module.contacts import Contacts
+from client.module.contact import Contact
+import json
 
 with open('../config.yaml', 'r') as file:
     config = yaml.safe_load(file)
@@ -16,7 +17,7 @@ class ClientServer:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.input_thread = ''
         logging.basicConfig(filename='error.log', level=logging.ERROR)
-        self.contacts = Contacts("test", "09xxxxxxxxx")
+        self.contact = Contact("test", "09xxxxxxxxx")
         self.isAliveProgram = True
 
     def connect_to_server(self) -> None:
@@ -26,6 +27,10 @@ class ClientServer:
             print('Error in connecting to chat server (May be server is off!)')
             exit(1)
             
+    def handle_data(self) -> None:
+        self.queue_thread = Thread(target=self.chat_in_public_room, args=(self.msg_queue,))
+        self.queue_thread.start()
+        
     def get_menu_choice(self) -> None:
         """
         -------------- menu -----------------
@@ -49,7 +54,7 @@ class ClientServer:
             elif choice == "2":
                 self.show_chat_list()
             elif choice == "3":
-                self.chat()
+                self.chat_with_contact()
             elif choice == "4" or choice == "5":
                 print("in construction ... ")
             elif choice=="6":
@@ -60,7 +65,7 @@ class ClientServer:
                 print("Please try again")
                 self.get_menu_choice()
     
-    def show_contacts_menu(self) -> None:        
+    def show_contacts_menu(self) -> None:
         choice = input("""
                       1: Add new contact
                       2: Show contacts
@@ -71,15 +76,15 @@ class ClientServer:
         if choice == "1":
             name = str(input("Please enter name?"))
             phone = str(input("Please enter phone number?"))
-            self.contacts = Contacts(name, phone)
+            self.contact = Contact(name, phone)
             self.get_menu_choice()
             
         elif choice == "2":
-            self.contacts.show_contacts()
+            self.contact.show_contacts()
             self.get_menu_choice()
             
         elif choice == "3":
-            self.contacts.search_contacts()
+            self.contact.search_contacts()
             self.get_menu_choice()
             
         else:
@@ -87,17 +92,21 @@ class ClientServer:
             print("Please try again")
             self.get_menu_choice()
         
-    def chat(self):
-        pass
+    def chat_with_contact(self):
+        """
+        first select a contact from contacts list
+        then starting chat with him/her
+        using chat module
+        """
+        self.contact.show_contacts()
+        contact_name = print("Please select a contact name for chat")
+        self.contact[contact_name]
+        
     
     def show_chat_list(self):
-        pass        
-    
-    def handle_data(self) -> None:
-        self.queue_thread = Thread(target=self.get_data_from_queue, args=(self.msg_queue,))
-        self.queue_thread.start()
-                
-    def get_data_from_queue(self):
+        pass
+            
+    def chat_in_public_room(self, contact: str):
         while True:
             data = input('Enter message: ')
             self.msg_queue.put(data)
