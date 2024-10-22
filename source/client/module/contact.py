@@ -1,4 +1,4 @@
-from code.utils import generate_uuid
+from source.utils import generate_uuid
 
 class Contact:
     def __init__(self, contact_id: int, name: str, phone: str, user_id: str):
