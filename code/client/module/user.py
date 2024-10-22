@@ -1,5 +1,5 @@
 from client.module.contact import Contact
-from utils import generate_uuid
+from code.utils import generate_uuid
 
 class User:
     def __init__(self, username: str, email: str, contacts: dict, status: bool):
