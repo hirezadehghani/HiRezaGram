@@ -15,8 +15,9 @@ class ClientServer:
         self.msg_queue = queue.Queue()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.input_thread = ''
-        self.contacts = Contacts()
         logging.basicConfig(filename='error.log', level=logging.ERROR)
+        self.contacts = None
+        self.isAliveProgram = True
 
     def connect_to_server(self) -> None:
         try:
@@ -31,42 +32,66 @@ class ClientServer:
         # contacts list
         # chat list
         # New Chat
-        """ 
-        
+        """         
+        while(self.isAliveProgram):
+            choice = input("""
+                        1: Contacts
+                        2: Chat List
+                        3: New Chat
+                        4: login ( in construction :) )
+                        5: Register ( in construction :) )
+                        6: Quit
+
+                        Please enter your choice: """)
+            
+            if choice == "1":
+                self.show_contacts_menu()
+            elif choice == "2":
+                self.show_chat_list()
+            elif choice == "3":
+                self.chat()
+            elif choice == "4" or choice == "5":
+                print("in construction ... ")
+            elif choice=="6":
+                isAlive = False
+                sys.exit
+            else:
+                print("You must only select either any number from 1 to 6")
+                print("Please try again")
+                self.get_menu_choice()
+    
+    def show_contacts_menu(self) -> None:        
         choice = input("""
-                      1: Contacts list
-                      2: Chat List
-                      3: New Chat
-                      4: login ( in construction :) )
-                      5: Register ( in construction :) )
-                      6: Quit
+                      1: Add new contact
+                      2: Show contacts
+                      3: Search Contacts
 
                       Please enter your choice: """)
 
         if choice == "1":
-            self.show_contacts_list()
+            name = str(input("Please enter name?"))
+            phone = str(input("Please enter phone number?"))
+            self.contacts = Contacts(name, phone)
+            self.get_menu_choice()
+            
         elif choice == "2":
-            self.show_chat_list()
+            self.contacts.show_contacts()
+            self.get_menu_choice()
+            
         elif choice == "3":
-            self.chat()
-        elif choice == "4" or choice == "5":
-            print("in construction ... ")
-        elif choice=="6":
-            sys.exit
+            self.contacts.search_contacts()
+            self.get_menu_choice()
+            
         else:
-            print("You must only select either any number from 1 to 6")
+            print("You must only select either any number from 1 to 3")
             print("Please try again")
-            self.menu()
-    
-    def show_contacts_list(self) -> None:
-        pass
+            self.get_menu_choice()
         
     def chat(self):
         pass
     
     def show_chat_list(self):
-        pass
-        
+        pass        
     
     def handle_data(self) -> None:
         self.queue_thread = Thread(target=self.get_data_from_queue, args=(self.msg_queue,))
