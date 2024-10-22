@@ -2,7 +2,7 @@ from client.module.contact import Contact
 from utils import generate_uuid
 
 class User:
-    def __init__(self, user_id: int, username: str, email: str, contacts: dict, status: bool):
+    def __init__(self, username: str, email: str, contacts: dict, status: bool):
         self.user_id = generate_uuid()
         self.username = username
         self.email = email
