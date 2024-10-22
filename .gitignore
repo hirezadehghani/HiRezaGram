@@ -162,3 +162,5 @@ cython_debug/
 #.idea/
 /myenv
 /error.log
+*.vpp.lock
+*.vpp.*
