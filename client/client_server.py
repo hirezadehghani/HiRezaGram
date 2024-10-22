@@ -16,7 +16,7 @@ class ClientServer:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.input_thread = ''
         logging.basicConfig(filename='error.log', level=logging.ERROR)
-        self.contacts = None
+        self.contacts = Contacts("test", "09xxxxxxxxx")
         self.isAliveProgram = True
 
     def connect_to_server(self) -> None:
@@ -53,7 +53,7 @@ class ClientServer:
             elif choice == "4" or choice == "5":
                 print("in construction ... ")
             elif choice=="6":
-                isAlive = False
+                self.isAliveProgram = False
                 sys.exit
             else:
                 print("You must only select either any number from 1 to 6")
