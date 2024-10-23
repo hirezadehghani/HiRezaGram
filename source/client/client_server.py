@@ -5,7 +5,8 @@ import time
 import yaml
 import logging
 import sys
-from client.module.contact import Contact
+from module.contact import Contact
+from module.user import User
 import json
 
 with open('../config.yaml', 'r') as file:
@@ -17,7 +18,9 @@ class ClientServer:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.input_thread = ''
         logging.basicConfig(filename='error.log', level=logging.ERROR)
-        self.contact = Contact("test", "09xxxxxxxxx")
+        self.user = User("testuser", "test@gmail.com", [], "online")
+        self.contact = Contact()
+        self.contact.add_new_contact("test", "09xxxxxxxxx", self.user.get_user_id)
         self.isAliveProgram = True
 
     def connect_to_server(self) -> None:
@@ -76,7 +79,7 @@ class ClientServer:
         if choice == "1":
             name = str(input("Please enter name?"))
             phone = str(input("Please enter phone number?"))
-            self.contact = Contact(name, phone)
+            self.contact.add_new_contact(name, phone, self.user.get_user_id)
             self.get_menu_choice()
             
         elif choice == "2":
@@ -94,9 +97,9 @@ class ClientServer:
         
     def chat_with_contact(self):
         """
-        first select a contact from contacts list
-        then starting chat with him/her
-        using chat module
+            first select a contact from contacts list
+            then starting chat with him/her
+            using chat module
         """
         self.contact.show_contacts()
         contact_name = print("Please select a contact name for chat")

@@ -1,4 +1,4 @@
-from source.utils import generate_uuid
+from source.client.module.utils import generate_uuid
 
 class Message:
     def __init__(self, sender_id: str, recipient_id: str, message_text: str, timestamp: str, status: bool):
