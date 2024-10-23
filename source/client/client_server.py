@@ -102,7 +102,6 @@ class ClientServer:
         contact_name = print("Please select a contact name for chat")
         self.contact[contact_name]
         
-    
     def show_chat_list(self):
         pass
             
