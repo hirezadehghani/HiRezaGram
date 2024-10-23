@@ -7,7 +7,7 @@ class User:
         self.username = username
         self.email = email
         self.contacts = contacts
-        self.status = status
+        self.status = status #online offline;
         
     def get_user_info(self):
         pass

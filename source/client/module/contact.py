@@ -6,7 +6,7 @@ class Contact:
         self.contact_id = generate_uuid()
         self.contacts = dict()
         self.last_message_time = None
-        self.status = None
+        self.status = None #online or offline
         self.user_id = user_id
         
         self.add_new_contact(name, phone)

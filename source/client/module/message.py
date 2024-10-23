@@ -7,6 +7,6 @@ class Message:
         self.recipient_id = recipient_id
         self.message_text = message_text
         self.timestamp = timestamp
-        self.status = status
+        self.status = status #delivered or read
         
     
