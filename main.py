@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QDialog, QApplication
 class MainWindow(QDialog):
     def __init__(self):
         super(MainWindow, self).__init__()
-        loadUi("./ui/main_window.ui", self)
+        loadUi("./docs/ui/main_window.ui", self)
         self.set_connections()
     
     def set_connections(self):
